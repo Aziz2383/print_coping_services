@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Услуги — Print Coping Services{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 rounded-3 shadow-sm mb-3">
+  <h1 class="h3 fw-bold mb-1">Услуги</h1>
+  <div class="text-muted">Добавляйте услуги через админку — они появятся здесь автоматически.</div>
+</div>
+
+<div class="row g-3">
+  {% for s in items %}
+  <div class="col-md-4">
+    <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+      <div class="fw-semibold fs-5">{{ s.name }}</div>
+
+      {% if s.short_description %}
+        <div class="text-muted small mt-1">{{ s.short_description }}</div>
+      {% endif %}
+
+      <div class="text-muted mt-2 mb-3">
+        {% if s.price_from %}{{ s.price_from }}{% else %}Цена по запросу{% endif %}
+      </div>
+
+      <a class="btn btn-dark btn-sm" href="{% url 'contacts' %}">Заказать</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-warning mb-0">
+      Пока нет услуг. Добавь их в админке: <b>/admin</b>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

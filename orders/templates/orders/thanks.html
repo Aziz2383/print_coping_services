@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Спасибо!{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 p-md-5 rounded-3 shadow-sm text-center">
+  <h1 class="h3 fw-bold">Спасибо!</h1>
+  <p class="text-muted">Заявка отправлена. Мы свяжемся с вами в ближайшее время.</p>
+  <a class="btn btn-dark" href="{% url 'home' %}">На главную</a>
+</div>
+{% endblock %}

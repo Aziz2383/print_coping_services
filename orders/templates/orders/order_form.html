@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Заказать — Print Coping Services{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 p-md-5 rounded-3 shadow-sm">
+  <h1 class="h3 fw-bold mb-3">Оставить заявку</h1>
+
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+
+    {% csrf_token %}
+
+    <div class="col-md-6">
+      <label class="form-label">Услуга</label>
+      {{ form.service }}
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Имя</label>
+      {{ form.name }}
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Телефон</label>
+      {{ form.phone }}
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Комментарий</label>
+      {{ form.comment }}
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Макет (PDF/PNG/JPG/AI/PSD)</label>
+      {{ form.file }}
+      <div class="form-text">Максимум 25–50MB (позже настроим ограничение).</div>
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+      <button class="btn btn-dark" type="submit">Отправить</button>
+      <a class="btn btn-outline-secondary" href="{% url 'home' %}">Назад</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Добавим Bootstrap классы полям (простой способ)
+  document.querySelectorAll("select, input, textarea").forEach(el => el.classList.add("form-control"));
+</script>
+{% endblock %}
