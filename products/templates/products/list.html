@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Товары — Print Coping Services{% endblock %}
+
+{% block content %}
+<div class="bg-white p-4 rounded-3 shadow-sm mb-3">
+  <h1 class="h3 fw-bold mb-1">Товары</h1>
+  <div class="text-muted">Готовые варианты полиграфии и популярные позиции.</div>
+</div>
+
+<div class="row g-3">
+  {% for p in items %}
+  <div class="col-md-4">
+    <div class="bg-white rounded-3 shadow-sm h-100 overflow-hidden">
+      {% if p.image %}
+        <img src="{{ p.image.url }}" class="w-100" style="height:180px; object-fit:cover;" alt="{{ p.name }}">
+      {% endif %}
+
+      <div class="p-4">
+        <div class="fw-semibold fs-5">{{ p.name }}</div>
+
+        {% if p.short_description %}
+          <div class="text-muted small mt-1">{{ p.short_description }}</div>
+        {% endif %}
+
+        <div class="text-muted mt-2 mb-3">
+          {% if p.price_from %}{{ p.price_from }}{% else %}Цена по запросу{% endif %}
+        </div>
+
+        <a class="btn btn-dark btn-sm" href="{% url 'orders:create' %}">Заказать</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-warning mb-0">Пока товаров нет. Добавь их в админке.</div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

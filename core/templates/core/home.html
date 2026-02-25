@@ -1,13 +1,324 @@
+
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Главная — Print Coping Services{% endblock %}
 
 {% block content %}
-<div class="p-4 p-md-5 rounded-3 bg-white shadow-sm">
-  <h1 class="display-6 fw-bold">Полиграфия быстро и качественно</h1>
-  <p class="lead text-muted">Визитки, листовки, баннеры, наклейки, копирование документов.</p>
-  <div class="d-flex gap-2">
-    <a class="btn btn-dark btn-lg" href="{% url 'services:list' %}">Услуги</a>
-    <a class="btn btn-outline-secondary btn-lg" href="{% url 'contacts' %}">Контакты</a>
+
+
+<section class="hero">
+  <div class="hero-bg"
+       style="background-image:url('{% static "img/hero.png" %}')">
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <h1 class="hero-title">Print Coping Services</h1>
+
+    <p class="hero-sub">
+      Визитки, листовки, баннеры, наклейки, печать документов.
+      Быстрое изготовление — поможем с макетом и материалами.
+    </p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary btn-lg" href="{% url 'orders:create' %}">Оставить заявку</a>
+      <a class="btn btn-outline-light btn-lg" href="{% url 'services:list' %}">Смотреть услуги</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section class="mb-5">
+  <h2 class="fw-bold text-center mb-4">Наши работы</h2>
+
+  <div class="row g-4">
+    {% for w in works %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="portfolio-card"
+           role="button"
+           data-bs-toggle="modal"
+           data-bs-target="#portfolioModal"
+           data-title="{{ w.title|escapejs }}"
+           data-image="{{ w.image.url }}"
+           data-desc="{{ w.description|default:''|escapejs }}">
+        <img src="{{ w.image.url }}" alt="{{ w.title }}">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">{{ w.title }}</div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning text-center">
+        Портфолио пока пустое. Добавь работы в админке.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===== WHY US (PRO) ===== -->
+<section class="my-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold mb-2">Почему выбирают нас</h2>
+    <p class="text-muted mb-0">Сервис, качество и скорость — без лишних обещаний.</p>
+  </div>
+
+  <div class="row g-4">
+    <!-- 1 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- lightning icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Быстро</div>
+            <div class="why-pro-text">Срочные заказы — без потери качества.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- check icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Качество</div>
+            <div class="why-pro-text">Чёткая печать, аккуратная резка, ровные цвета.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- chat icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.6 0-3.1-.4-4.4-1.2L3 20l1.2-4.9A8.5 8.5 0 1 1 21 11.5z"
+                    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Консультация</div>
+            <div class="why-pro-text">Подскажем формат, бумагу и подготовку макета.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- price tag icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M20 13l-7 7-11-11V2h7L20 13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M7 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Честная цена</div>
+            <div class="why-pro-text">Предложим варианты под ваш бюджет.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- paperclip icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M21 12.5l-7.6 7.6a5 5 0 0 1-7.1-7.1l9-9a3.5 3.5 0 0 1 5 5l-9.2 9.2a2 2 0 0 1-2.8-2.8L16 7.8"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Удобно</div>
+            <div class="why-pro-text">Можно прикрепить файл и быстро оформить заказ.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="why-pro-card">
+        <div class="why-pro-top">
+          <div class="why-pro-ico">
+            <!-- pin icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M12 10.5a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div>
+            <div class="why-pro-title">Рядом</div>
+            <div class="why-pro-text">Работаем в Ташкенте. Быстро согласуем детали.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ===== MINI FORM ===== -->
+<section class="cta-section my-5">
+  <div class="cta-box">
+    <div class="cta-left">
+      <h3 class="cta-title">Получите расчёт за 5 минут</h3>
+      <p class="cta-text">
+        Оставьте номер телефона — мы свяжемся с вами и рассчитаем стоимость.
+      </p>
+    </div>
+
+    <form method="post" action="{% url 'orders:create' %}" class="cta-form">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Ваше имя" required>
+      <input type="tel" name="phone" placeholder="Телефон" required>
+      <button type="submit">Получить расчёт</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== CLIENTS ===== -->
+<section class="mb-5 overflow-hidden">
+  <h2 class="fw-bold text-center mb-4">Нам доверяют</h2>
+
+  <div class="clients-marquee">
+    <div class="clients-track">
+      {% for c in clients %}
+        <div class="client-item">
+          <img src="{{ c.logo.url }}" alt="{{ c.name }}">
+        </div>
+      {% endfor %}
+
+      {% for c in clients %}
+        <div class="client-item">
+          <img src="{{ c.logo.url }}" alt="{{ c.name }}">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== CTA BLOCK ===== -->
+<section>
+  <div class="bg-dark text-white rounded-4 p-4 p-md-5 text-center shadow-soft">
+    <h3 class="fw-bold mb-3">
+      Готовы заказать печать?
+    </h3>
+    <p class="text-light mb-4">
+      Отправьте макет прямо сейчас — мы свяжемся с вами в течение 15 минут.
+    </p>
+    <a href="{% url 'orders:create' %}" class="btn btn-light btn-lg">
+      Оформить заказ
+    </a>
+  </div>
+</section>
+
+
+<!-- ===== MODAL ===== -->
+<div class="modal fade" id="portfolioModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 overflow-hidden">
+      <div class="modal-header">
+        <h5 class="modal-title" id="portfolioModalTitle">Работа</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <img id="portfolioModalImg"
+             src=""
+             class="w-100"
+             style="max-height:75vh; object-fit:contain; background:#111;">
+      </div>
+      <div class="modal-footer justify-content-between">
+        <div class="text-muted small" id="portfolioModalDesc"></div>
+        <a class="btn btn-dark" href="{% url 'orders:create' %}">
+          Заказать похожее
+        </a>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- ===== LOCATION ===== -->
+<section class="mt-5">
+  <div class="container">
+    <div class="row align-items-center g-4">
+
+      <div class="col-md-6">
+        <h2 class="fw-bold mb-3">Мы находимся здесь</h2>
+        <p class="text-muted">
+          Приезжайте к нам в офис — обсудим заказ и подберём лучшие решения для вашего бизнеса.
+        </p>
+
+        <div class="mt-3">
+          <div class="fw-semibold">📍 Адрес:</div>
+          <div class="text-muted">Ташкент, ул. Навои</div>
+
+          <div class="fw-semibold mt-3">📞 Телефон:</div>
+          <div class="text-muted">+998 97 320 52 52</div>
+        </div>
+      </div>
+
+           <div class="col-md-6">
+        <div class="map-wrapper">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d646.1618959433492!2d65.38612971630343!3d40.0932978565058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f51c10022778dcb%3A0x7d65fbc93f91a97f!2sPRINT%20COPYING%20SERVICES!5e0!3m2!1sru!2s!4v1771918781822!5m2!1sru!2s"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+
+          <a href="https://maps.google.com/?q=PRINT+COPYING+SERVICES"
+             target="_blank"
+             class="map-open-btn">
+             Открыть в Google Maps
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const portfolioModal = document.getElementById('portfolioModal');
+
+  portfolioModal.addEventListener('show.bs.modal', function (event) {
+    const card = event.relatedTarget;
+
+    const title = card.getAttribute('data-title');
+    const img = card.getAttribute('data-image');
+    const desc = card.getAttribute('data-desc');
+
+    document.getElementById('portfolioModalTitle').textContent = title;
+
+    const modalImg = document.getElementById('portfolioModalImg');
+    modalImg.src = img;
+    modalImg.alt = title;
+
+    document.getElementById('portfolioModalDesc').textContent = desc;
+  });
+</script>
+
 {% endblock %}

@@ -22,6 +22,8 @@ urlpatterns = [
     path('', include('core.urls')),
     path('services/', include('services.urls')),
     path("", include("orders.urls")),
+    path("", include("products.urls")),
+
 ]
 
 from django.conf import settings

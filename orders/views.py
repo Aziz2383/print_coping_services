@@ -35,6 +35,10 @@ def order_create(request):
     else:
         form = OrderForm()
 
+    service_id = request.GET.get("service")
+    if service_id and request.method != "POST":
+        form = OrderForm(initial={"service": service_id})
+
     return render(request, "orders/order_form.html", {"form": form})
 
 

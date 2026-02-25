@@ -1,15 +1,23 @@
 from django.db import models
+from slugify import slugify   # pip install python-slugify
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=120, unique=True)
+    title = models.CharField(max_length=120, unique=True)
+    slug = models.SlugField(max_length=140, unique=True, blank=True)
 
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+        ordering = ["title"]
 
-    def __str__(self):
-        return self.name
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)  # Визитки -> vizitki
+        super().save(*args, **kwargs)
+
+    def str(self):
+        return self.title
 
 
 class Service(models.Model):
@@ -18,21 +26,13 @@ class Service(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="services",
+        related_name="services"
     )
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=220, unique=True)
-    short_description = models.CharField(max_length=255, blank=True)
-    price_from = models.CharField(max_length=80, blank=True)  # "от 50 000 сум"
-    is_active = models.BooleanField(default=True)
-    sort_order = models.PositiveIntegerField(default=0)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    price_from = models.PositiveIntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to="services/", null=True, blank=True)
 
-    class Meta:
-        verbose_name = "Услуга"
-        verbose_name_plural = "Услуги"
-        ordering = ["sort_order", "name"]
-
-    def __str__(self):
-        return self.name
+    def str(self):
+        return self.title

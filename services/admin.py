@@ -1,16 +1,13 @@
 from django.contrib import admin
-from .models import Category, Service
-
+from .models import Service, Category
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
-
+    prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title",)
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "price_from", "is_active", "sort_order")
-    list_filter = ("is_active", "category")
-    search_fields = ("name", "slug")
-    prepopulated_fields = {"slug": ("name",)}
-    ordering = ("sort_order", "name")
+    list_display = ("title", "category", "price_from")
+    list_filter = ("category",)
+    search_fields = ("title",)

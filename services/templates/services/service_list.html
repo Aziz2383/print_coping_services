@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Услуги — Print Coping Services{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-2 mb-4">
+  <div>
+    <h1 class="fw-bold mb-1">Каталог услуг</h1>
+    <p class="text-muted mb-0">Выберите услугу и оставьте заявку — ответим в Telegram за 5–15 минут.</p>
+  </div>
+
+  <a class="btn btn-dark rounded-4" href="{% url 'orders:create' %}">Оформить заказ</a>
+</div>
+
+<div class="row g-4 services-grid">
+  {% for s in services %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="service-card">
+
+      <div class="service-media">
+          {% if s.image %}
+            <img class="service-img open-photo"
+                 src="{{ s.image.url }}"
+                 alt="{{ s.title }}"
+                 data-full="{{ s.image.url }}">
+
+          {% else %}
+            <div class="service-noimg">
+              <div class="service-noimg-ico">🖼️</div>
+              <div class="service-noimg-text">Фото скоро добавим</div>
+            </div>
+          {% endif %}
+
+        <div class="service-badge">Популярно</div>
+        <div class="service-icon">🖨️</div>
+      </div>
+
+      <div class="p-4">
+        <h3 class="service-title">{{ s.title }}</h3>
+
+        <p class="service-desc">
+          {% if s.description %}
+            {{ s.description|truncatechars:110 }}
+          {% else %}
+            Качественная печать и быстрое изготовление. Поможем с макетом и материалами.
+          {% endif %}
+        </p>
+
+        <div class="service-meta">
+          <div class="service-price">
+            {% if s.price_from %}
+              от {{ s.price_from }} сум
+            {% else %}
+              Цена по запросу
+            {% endif %}
+          </div>
+
+          <div class="service-actions">
+            <a class="btn btn-primary btn-sm" href="{% url 'orders:create' %}?service={{ s.id }}">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-warning text-center">
+      Услуг пока нет. Добавь их в админке.
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- PHOTO MODAL -->
+<div id="photoModal" class="photo-modal">
+  <div class="photo-content">
+    <span class="photo-close">&times;</span>
+    <img id="modalImage" alt="">
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const modal = document.getElementById("photoModal");
+  const modalImg = document.getElementById("modalImage");
+  const closeBtn = modal?.querySelector(".photo-close");
+
+  function openModal(src){
+    if(!modal || !modalImg) return;
+    modalImg.src = src;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden"; // чтобы фон не скроллился
+  }
+
+  function closeModal(){
+    if(!modal || !modalImg) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    modalImg.src = "";
+    document.body.style.overflow = ""; // вернуть скролл
+  }
+
+  // открыть по клику на картинку
+  document.querySelectorAll(".open-photo").forEach(img => {
+    img.addEventListener("click", () => openModal(img.dataset.full));
+  });
+
+  // закрыть по крестику
+  closeBtn?.addEventListener("click", closeModal);
+
+  // закрыть по клику на фон (НЕ на картинку)
+  modal?.addEventListener("click", (e) => {
+    if(e.target === modal) closeModal();
+  });
+
+  // закрыть по Esc
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape") closeModal();
+  });
+
+});
+</script>
+{% endblock %}
